@@ -1,0 +1,7 @@
+{
+  "test": "empty shipment list; no parcel queried",
+  "initial_status": 200,
+  "status": 400,
+  "content_type": "application/json",
+  "body": "{\"timestamp\":\"2026-10-23T22:44:31.330+09:00\",\"errorMessage\":\"\",\"errors\":[{\"field\":\"myNmtJho.nmtJhoLst\",\"code\":\"CMCM004BEM\",\"message\":\"1桁から100桁までの値を指定してください。\"}]}"
+}
