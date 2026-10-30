@@ -1,8 +1,32 @@
 # Read-only Yamato CLI
 
-Experimental Python client for the public Yamato parcel search API, derived from Yamato’s public frontend JavaScript; see [protocol notes](docs/protocol-notes.md). It uses HTTP directly through `httpx`, keeps cookies within a client session, and has no browser dependency.
+[![CI](https://github.com/raitoxlol/yamato-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/raitoxlol/yamato-cli/actions/workflows/ci.yml)
 
-Install and run:
+Experimental Python client for the public Yamato parcel search API, derived from Yamato’s public frontend JavaScript; see [protocol notes](https://github.com/raitoxlol/yamato-cli/blob/main/docs/protocol-notes.md). It uses HTTP directly through `httpx`, keeps cookies within a client session, and has no browser dependency.
+
+## Install
+
+Requires Python 3.10 or newer.
+
+```sh
+pipx install yamato-cli
+```
+
+Or with pip:
+
+```sh
+python -m pip install yamato-cli
+```
+
+```sh
+yamato --help
+yamato track YOUR_TRACKING_NUMBER
+yamato probe
+yamato detail YOUR_TRACKING_NUMBER
+yamato slots YOUR_TRACKING_NUMBER
+```
+
+For a local checkout:
 
 ```sh
 git clone https://github.com/raitoxlol/yamato-cli.git
@@ -10,11 +34,6 @@ cd yamato-cli
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -e .
-yamato --help
-yamato track YOUR_TRACKING_NUMBER
-yamato probe
-yamato detail YOUR_TRACKING_NUMBER
-yamato slots YOUR_TRACKING_NUMBER
 ```
 
 Supply only tracking numbers you are authorized to access. `track` accepts 11 or 12 ASCII digits, or groups separated by hyphens such as `dddd-dddd-dddd`. It checks the final digit against the preceding digits modulo 7 before making a request. Output is the complete JSON response on stdout. A failure exits with status 2 and prints a JSON error to stderr, retaining the HTTP status and server response when available. Argument syntax errors use argparse's standard text error output.
@@ -34,3 +53,7 @@ Offline tests use `httpx.MockTransport` and do not contact Yamato:
 ```sh
 python -m unittest discover -s tests -v
 ```
+
+## License
+
+[MIT License](https://github.com/raitoxlol/yamato-cli/blob/main/LICENSE). Copyright (c) 2026 wright williams.
