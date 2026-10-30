@@ -1,0 +1,55 @@
+name: Release
+
+# Publishes to PyPI only when a v* tag is pushed. Branch pushes, pull
+# requests, and manual runs do not start this workflow.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build sdist and wheel
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install build tools
+        run: python -m pip install build twine
+      - name: Build sdist and wheel
+        run: python -m build
+      - name: Check distribution metadata
+        run: twine check dist/*
+      - uses: actions/upload-artifact@v7
+        with:
+          name: python-package-distributions
+          path: dist/
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/yamato-cli
+    permissions:
+      id-token: write
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: python-package-distributions
+          path: dist/
+      - name: Publish distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
