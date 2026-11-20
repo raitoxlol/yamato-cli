@@ -1,10 +1,5 @@
+/target
 __pycache__/
-*.py[cod]
-*.egg-info/
+*.pyc
 .venv/
-venv/
-build/
-dist/
-.pytest_cache/
-.env
-.env.*
+*.egg-info/
