@@ -1,0 +1,23 @@
+[package]
+name = "yamato-cli"
+version = "0.2.0"
+edition = "2021"
+description = "Read-only Yamato parcel tracking CLI (Rust port of the Python client)"
+license = "MIT"
+repository = "https://github.com/raitoxlol/yamato-cli"
+keywords = ["yamato", "kuroneko", "tracking", "cli", "japan"]
+
+[[bin]]
+name = "yamato"
+path = "src/main.rs"
+
+[dependencies]
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+clap = { version = "4", features = ["derive"] }
+reqwest = { version = "0.12", features = ["blocking", "json", "rustls-tls"], default-features = false }
+serde_json = "1"
+uuid = { version = "1", features = ["v4"] }
+
+[profile.release]
+lto = true
+strip = true

@@ -34,3 +34,17 @@ Offline tests use `httpx.MockTransport` and do not contact Yamato:
 ```sh
 python -m unittest discover -s tests -v
 ```
+
+## Rust implementation
+
+A faithful Rust port lives alongside the Python client (`src/`, `Cargo.toml`). It issues the same requests, returns the same JSON shapes, and uses the same exit codes (0 success, 2 failure with a JSON error on stderr).
+
+```sh
+cargo build --release
+./target/release/yamato track YOUR_TRACKING_NUMBER
+./target/release/yamato probe
+./target/release/yamato detail YOUR_TRACKING_NUMBER
+./target/release/yamato slots YOUR_TRACKING_NUMBER
+```
+
+Differences from the Python CLI: argument errors use clap's standard output instead of argparse's, and the Rust build has no Python dependency. Offline unit tests cover tracking-number validation, the modulo-7 check digit, request limits, and the `slots` eligibility extraction (`cargo test`). Live behavior was verified on 2026-11-20: `probe` reproduced the documented HTTP 400 `CMCM004BEM` validation response and `track 000000000000` returned the same HTTP 200 special-product record as the Python evidence.
